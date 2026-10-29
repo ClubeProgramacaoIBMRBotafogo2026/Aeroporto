@@ -16,25 +16,23 @@ DB_PORT = 3305
 
 sistema = True;
 
-conn=None
+global conn
+    
+try:
+    conn = mariadb.connect(
+        user=DB_USER,
+        password=DB_PASS,
+        host=DB_HOST,
+        port=DB_PORT,
+        database=DB_NAME
+        )
+    
+    print("500")
+        
+except mariadb.Error as e:
+    print(f"Erro ao conectar: {e}")
 
 # Funções
-
-def connectDB():
-    global conn
-    
-    try:
-        conn = mariadb.connect(
-            user=DB_USER,
-            password=DB_PASS,
-            host=DB_HOST,
-            port=DB_PORT,
-            database=DB_NAME
-            )
-        print("500")
-        
-    except mariadb.Error as e:
-        print(f"Erro ao conectar: {e}")
 
 def getTable(params, table, query):
     if query and query.strip():
@@ -153,7 +151,7 @@ def deleteTable(id, table):
 
 def consultaSimples():
     # Busca de Registros no Banco
-    busca = getTable("(id, Nome, info)", "Tabela1", "")
+    busca = getTable("*", "Tabela1", "")
     
     if busca[0] is True:
         tabela = busca[1]
@@ -215,98 +213,131 @@ def newParameter(register):
     return res
 
 
+def escolhaOperacao(nomeTabela):
+
+    operacao = True
+    
+    while operacao:
+        opcao = int(input("\nEscolha uma das operações \n 1 - Consulta \n 2 - Incluir \n 3 - Deletar \n 4 - Atualizar \n 5 - Sair \n"))
+    
+        # Consulta
+        elif opcao == 1:
+            
+            if conn:
+                print(consultaSimples()[1])
+                
+            else:
+                print("\nVocê não está conectado ao banco, conecte-se para consultar.")
+                
+        # Incluir    
+        elif opcao == 2:
+            
+            if conn:
+    
+                busca = getTable("(id, Nome, info)", "Tabela1", "")
+                
+                if busca[0] is True:
+                    
+                    registro = busca[1][0]
+                    
+                    print("\nInsira os valores para cada paramêtro")
+                    
+                    params = newParameter(registro)
+                    
+                    print(insertTable("Tabela1", params))
+            
+                else: 
+                    print("\nHouve um problemas para pegar o formato de dados para requisitar o usuário, tente novamente.")
+            
+            
+            else:
+                print("\nVocê não está conectado ao banco, conecte-se para incluir.")
+    
+        # Deletar
+        elif opcao == 3:
+            
+            if conn:
+                registro = consultaSimples()
+                
+                if registro[0] is True:
+                    print(deleteTable(int(registro[1]["id"]), "Tabela1"))
+                    
+                else: 
+                    print("\nHouve um problemas para pegar o formato de dados para requisitar o usuário, tente novamente.")
+            
+            
+            else:
+                print("\nVocê não está conectado ao banco, conecte-se para deletar.")
+    
+        # Atualizar
+        elif opcao == 4:
+            
+            if conn:
+                registro = consultaSimples()
+                
+                if registro[0] is True:
+                    
+                    print("\nInsira as novas informações")
+                    
+                    params = newParameter(registro[1])
+                    
+                    print(updateTable(int(registro[1]["id"]), "Tabela1", params))
+                
+                else: 
+                    print("\nHouve um problemas para pegar o formato de dados para requisitar o usuário, tente novamente.")
+            
+                
+            else:
+                print("\nVocê não está conectado ao banco, conecte-se para atualizar.")
+    
+        # Sair
+        elif opcao == 5:
+            print("\nObrigado por checar essa tabela\n")
+            
+            # Faz a condição do while dessa função se tornar falsa
+            operacao = False;
+            
+        else:
+            print("\n Opção inválida, selecione uma das operações indicadas")
+
+
 # Sistema em si
 
 
 while sistema:
 
-    opcao = int(input("\nEscolha uma das operações \n 1 - Conectar-se ao banco \n 2 - Consulta \n 3 - Incluir \n 4 - Deletar \n 5 - Atualizar \n 6 - Sair \n"))
+    print("\nEscolha qual parte do sistema deseja acessar\n")
+
+    escolhaParteSistema = int(input("1 - Aeroporto \n 2 - Cia Aerea \n 3 - Aeronave \n 4 - Aeronave Cia Aerea \n 5 - ??? \n 6 - Cliente \n 7 - Voo \n 8 - Reserva \n 9 - Sair \n"))
+
+    if escolhaParteSistema == 1:
+        escolhaOperacao("Aeroporto")
+
+    else if escolhaParteSistema == 2:
+        escolhaOperacao("Aeroporto")
+
+    else if escolhaParteSistema == 3:
+        escolhaOperacao("Aeroporto")
+
+    else if escolhaParteSistema == 4:
+        escolhaOperacao("Aeroporto")
+
+    else if escolhaParteSistema == 5:
+        escolhaOperacao("Aeroporto")
+
+    else if escolhaParteSistema == 6:
+        escolhaOperacao("Aeroporto")
+
+    else if escolhaParteSistema == 7:
+        escolhaOperacao("Aeroporto")
+
+    else if escolhaParteSistema == 8:
+        escolhaOperacao("Aeroporto")
+
+    else if escolhaParteSistema == 9:
+        escolhaOperacao("Aeroporto")
+
+    else if escolhaParteSistema == 10:
+        escolhaOperacao("Aeroporto")
     
-    # Conexão com o Banco
-    if opcao == 1:
-        connectDB();
     
-    
-    # Consulta
-    elif opcao == 2:
-        
-        if conn:
-            print(consultaSimples()[1])
-            
-        else:
-            print("\nVocê não está conectado ao banco, conecte-se para consultar.")
-            
-    # Incluir    
-    elif opcao == 3:
-        
-        if conn:
-
-            busca = getTable("(id, Nome, info)", "Tabela1", "")
-            
-            if busca[0] is True:
-                
-                registro = busca[1][0]
-                
-                print("\nInsira os valores para cada paramêtro")
-                
-                params = newParameter(registro)
-                
-                print(insertTable("Tabela1", params))
-        
-            else: 
-                print("\nHouve um problemas para pegar o formato de dados para requisitar o usuário, tente novamente.")
-        
-        
-        else:
-            print("\nVocê não está conectado ao banco, conecte-se para incluir.")
-
-    # Deletar
-    elif opcao == 4:
-        
-        if conn:
-            registro = consultaSimples()
-            
-            if registro[0] is True:
-                print(deleteTable(int(registro[1]["id"]), "Tabela1"))
-                
-            else: 
-                print("\nHouve um problemas para pegar o formato de dados para requisitar o usuário, tente novamente.")
-        
-        
-        else:
-            print("\nVocê não está conectado ao banco, conecte-se para deletar.")
-
-    # Atualizar
-    elif opcao == 5:
-        
-        if conn:
-            registro = consultaSimples()
-            
-            if registro[0] is True:
-                
-                print("\nInsira as novas informações")
-                
-                params = newParameter(registro[1])
-                
-                print(updateTable(int(registro[1]["id"]), "Tabela1", params))
-            
-            else: 
-                print("\nHouve um problemas para pegar o formato de dados para requisitar o usuário, tente novamente.")
-        
-            
-        else:
-            print("\nVocê não está conectado ao banco, conecte-se para atualizar.")
-
-    # Sair
-    elif opcao == 6:
-        print("\nObrigado por usar o programa\n")
-        
-        # Desconecta-se do Banco
-        if conn:
-            conn.close()
-        
-        # Faz a condição do while principal se tornar falsa
-        sistema = False;
-        
-    else:
-        print("\n Opção inválida, selecione uma das operações indicadas")
