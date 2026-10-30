@@ -149,9 +149,9 @@ def deleteTable(id, table):
 
     return res
 
-def consultaSimples():
+def consultaSimples(nomeTabela):
     # Busca de Registros no Banco
-    busca = getTable("*", "Tabela1", "")
+    busca = getTable("*", nomeTabela, "")
     
     if busca[0] is True:
         tabela = busca[1]
@@ -224,7 +224,7 @@ def escolhaOperacao(nomeTabela):
         elif opcao == 1:
             
             if conn:
-                print(consultaSimples()[1])
+                print(consultaSimples(nomeTabela)[1])
                 
             else:
                 print("\nVocê não está conectado ao banco, conecte-se para consultar.")
@@ -234,7 +234,7 @@ def escolhaOperacao(nomeTabela):
             
             if conn:
     
-                busca = getTable("(id, Nome, info)", "Tabela1", "")
+                busca = getTable("*", nomeTabela, "")
                 
                 if busca[0] is True:
                     
@@ -257,10 +257,10 @@ def escolhaOperacao(nomeTabela):
         elif opcao == 3:
             
             if conn:
-                registro = consultaSimples()
+                registro = consultaSimples(nomeTabela)
                 
                 if registro[0] is True:
-                    print(deleteTable(int(registro[1]["id"]), "Tabela1"))
+                    print(deleteTable(int(registro[1]["id"]), nomeTabela))
                     
                 else: 
                     print("\nHouve um problemas para pegar o formato de dados para requisitar o usuário, tente novamente.")
@@ -273,7 +273,7 @@ def escolhaOperacao(nomeTabela):
         elif opcao == 4:
             
             if conn:
-                registro = consultaSimples()
+                registro = consultaSimples(nomeTabela)
                 
                 if registro[0] is True:
                     
@@ -281,7 +281,7 @@ def escolhaOperacao(nomeTabela):
                     
                     params = newParameter(registro[1])
                     
-                    print(updateTable(int(registro[1]["id"]), "Tabela1", params))
+                    print(updateTable(int(registro[1]["id"]), nomeTabela, params))
                 
                 else: 
                     print("\nHouve um problemas para pegar o formato de dados para requisitar o usuário, tente novamente.")
@@ -308,36 +308,32 @@ while sistema:
 
     print("\nEscolha qual parte do sistema deseja acessar\n")
 
-    escolhaParteSistema = int(input("1 - Aeroporto \n 2 - Cia Aerea \n 3 - Aeronave \n 4 - Aeronave Cia Aerea \n 5 - ??? \n 6 - Cliente \n 7 - Voo \n 8 - Reserva \n 9 - Sair \n"))
+    escolhaParteSistema = int(input("1 - Aeroporto \n 2 - Cia Aerea \n 3 - Aeronave \n 4 - Aeronave Cia Aerea \n 5 - Residencia \n 6 - Cliente \n 7 - Voo \n 8 - Reserva \n 9 - Sair \n"))
 
     if escolhaParteSistema == 1:
         escolhaOperacao("Aeroporto")
 
     else if escolhaParteSistema == 2:
-        escolhaOperacao("Aeroporto")
+        escolhaOperacao("Cia_Aerea")
 
     else if escolhaParteSistema == 3:
-        escolhaOperacao("Aeroporto")
+        escolhaOperacao("Aeronave")
 
     else if escolhaParteSistema == 4:
-        escolhaOperacao("Aeroporto")
+        escolhaOperacao("Aeronave_Cia_Aerea")
 
     else if escolhaParteSistema == 5:
-        escolhaOperacao("Aeroporto")
+        escolhaOperacao("Residencia")
 
     else if escolhaParteSistema == 6:
-        escolhaOperacao("Aeroporto")
+        escolhaOperacao("Cliente")
 
     else if escolhaParteSistema == 7:
-        escolhaOperacao("Aeroporto")
+        escolhaOperacao("Voo")
 
     else if escolhaParteSistema == 8:
-        escolhaOperacao("Aeroporto")
+        escolhaOperacao("Reserva")
 
     else if escolhaParteSistema == 9:
-        escolhaOperacao("Aeroporto")
-
-    else if escolhaParteSistema == 10:
-        escolhaOperacao("Aeroporto")
-    
+        escolhaOperacao("Sair")
     
