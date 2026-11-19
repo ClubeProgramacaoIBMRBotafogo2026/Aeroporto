@@ -6,7 +6,7 @@ DB_HOST = 'localhost'
 DB_NAME = ''
 DB_USER = ''
 DB_PASS = ''
-DB_PORT = 3305
+DB_PORT = 3306
 
 # Variaveís iniciais
 
@@ -15,6 +15,7 @@ sistema = True;
 global conn
     
 try:
+# conn = Variavél de conexão com o banco
     conn = mariadb.connect(
         user=DB_USER,
         password=DB_PASS,
@@ -55,7 +56,8 @@ def getTable(params, table, query):
     cursor.close()
     
     return res
-
+    
+# Retorna um item de uma tabela especificada e com id especificado
 def getTableById(id, table):
     cursor = conn.cursor(dictionary=True)
     
@@ -71,6 +73,7 @@ def getTableById(id, table):
     
     return res
 
+# 
 def insertTable(table, params):
     cursor = conn.cursor(dictionary=True)
     
