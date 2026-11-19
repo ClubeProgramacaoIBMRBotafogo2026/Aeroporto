@@ -1,15 +1,11 @@
 import mariadb
 
-# Author: Asafe Domingues Marcelino
-# Main help: God
-# Subhelper: Gemini to remember syntax and things like which function to call to acces the DB_HOST
-
 # Informações do Banco
 
 DB_HOST = 'localhost'
-DB_NAME = 'tenochi'
-DB_USER = 'tenochi'
-DB_PASS = 'tenochi'
+DB_NAME = ''
+DB_USER = ''
+DB_PASS = ''
 DB_PORT = 3305
 
 # Variaveís iniciais
